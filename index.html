@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="title">Browser Object Model</h1>
+  <button id="start">Начать игру!</button>
+  <button id="react" class="hidden">Жми скорее!!!</button>
+  <div id="result" class="result hidden">
+    <div id="result-text"></div>
+    <button id="new-game">Начать заново</button>
+  </div>
+  <script>
+    const title = document.getElementById('title');
+    const start = document.getElementById('start');
+    const react = document.getElementById('react');
+    const result = document.getElementById('result');
+    const resultText = document.getElementById('result-text');
+    const newGame = document.getElementById('new-game');
+
+    let startTime;
+
+    function startGame() {
+      const timeout = Math.floor((3 + Math.random() * 7) * 1000);
+
+      setTimeout(() => {
+        startTime = performance.now();
+        react.classList.remove('hidden');
+      }, timeout);
+    }
+
+    start.onclick = function() {
+      start.classList.add('hidden');
+
+      startGame();
+    };
+
+    react.onclick = function() {
+      const reactionTime = performance.now() - startTime;
+
+      resultText.textContent = `Ваш результат: ${(reactionTime / 1000).toFixed(3)} сек`;
+
+      react.classList.add('hidden');
+      result.classList.remove('hidden');
+    };
+
+    newGame.onclick = function() {
+      result.classList.add('hidden');
+
+      startGame();
+    }
+
+    const MOSCOW_LATITUDE = 55.755826;
+    const MOSCOW_LONGITUDE = 37.6173;
+
+    const PITER_LATITUDE = 59.57;
+    const PITER_LONGITUDE = 30.19;
+
+    navigator.geolocation.getCurrentPosition(function(data) {
+      const coords = data.coords;
+      const lat = coords.latitude;
+      const lon = coords.longitude;
+
+      const latToMoscow = MOSCOW_LATITUDE - lat;
+      const lonToMoscow = MOSCOW_LONGITUDE - lon;
+
+      const distanceMoscow = latToMoscow ** 2 + lonToMoscow ** 2;
+
+      const latToPiter = PITER_LATITUDE - lat;
+      const lonToPiter = PITER_LONGITUDE - lon;
+
+      const distancePiter = latToPiter ** 2 + lonToPiter ** 2;
+
+      if (distanceMoscow > distancePiter) {
+        title.textContent = 'Шаверма';
+      } else {
+        title.textContent = 'Шаурма';
+      }
+    });
+  </script>
+</body>
+</html>

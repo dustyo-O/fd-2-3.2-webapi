@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #video {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <video id="video"></video>
+  <script>
+    const video = document.getElementById('video');
+
+    navigator.mediaDevices.getDisplayMedia({ video: true })
+      .then(function(stream) {
+        video.srcObject = stream;
+
+        video.onloadedmetadata = () => {
+          video.play();
+        };
+      });
+  </script>
+</body>
+</html>

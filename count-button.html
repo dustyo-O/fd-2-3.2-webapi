@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Мстительная кнопка</h1>
+  <button id="revenge-button">Загрузка...</button>
+  <script>
+    const revengeButton = document.getElementById('revenge-button');
+    let count = Number(localStorage.getItem('revenge-count') ?? 0);
+
+    function repaintButton() {
+      revengeButton.textContent = `количество кликов: ${count}`;
+    }
+
+    repaintButton();
+
+    revengeButton.onclick = function() {
+      count += 1;
+
+      repaintButton();
+      localStorage.setItem('revenge-count', count);
+    }
+  </script>
+</body>
+</html>
